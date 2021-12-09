@@ -12,7 +12,7 @@ process create_csv {
     publishDir "/home/allu5328/Documents/applied_bioinformatics/Beagle_run_samples_together"
 
     """
-    bash $f -2.0 0.1 -0.3 > likelihoods.csv
+    bash $f -2.0 0.1 -0.4 > likelihoods.csv
     """
 
 }
