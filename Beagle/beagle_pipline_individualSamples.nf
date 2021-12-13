@@ -1,4 +1,4 @@
-//nextflow pipeline.nf -c pipeline.config --project "uppmax2020-2-5" --clusterOptions "-M snowy" 
+//nextflow pipeline.nf -c pipeline.config --project "uppmax2020-2-5" --clusterOptions "-M snowy"
 
 csv_script = Channel.fromPath("/home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/likelihood_csv.sh")
 
@@ -9,10 +9,8 @@ process create_csv {
     output:
     file "likelihoods.csv" into csvChannel
 
-    //publishDir "/home/allu5328/Documents/applied_bioinformatics/Nextflow"
-
     """
-    bash $f -2.0 0.1 -0.4 > likelihoods.csv
+    bash $f -0.8 0.1 -0.4 > likelihoods.csv
     """
 
 }
@@ -31,8 +29,6 @@ process likelihood_erros {
     output:
     file "*.vcf" into vcf_channel
 
-    //publishDir "/home/allu5328/Documents/applied_bioinformatics/Nextflow/blurred_vcf"
-
     "bash /home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/zipped_blurring_script.sh $likelihood $f > ${f.baseName}_${likelihood}.vcf"
 
 }
@@ -48,7 +44,7 @@ process divide_samples {
     output:
     file "*.vcf.gz" into per_sample_channel
 
-    publishDir "/home/allu5328/Documents/applied_bioinformatics/Nextflow/per_sample_vcf_files"
+    //publishDir "/home/allu5328/Documents/applied_bioinformatics/Nextflow/per_sample_vcf_files"
 
     shell:
     '''
@@ -56,7 +52,7 @@ process divide_samples {
 
     #samples_file=reference_for_some_markers.vcf
     #results_directory=samples/
-    
+
     tot_cols=$(awk '{print NF}' !{f} | sort -nu | tail -n 1)
     sample_cols=$(expr $tot_cols - 9)
 
@@ -68,11 +64,6 @@ process divide_samples {
     done
     '''
 }
-
-// probably a better way of creating a file for all samples
-//sampleId=$( bcftools query -l $indir$samples_file | head -$sample | tail -1 )
-//sample_file=s$sampleId.$samples_file
-//bcftools view -Oz -s $sampleId -o $indir$sample_file $indir$samples_file
 
 
 
@@ -96,9 +87,6 @@ process beagle {
 
     output:
     file "*blurred.imputed.vcf.gz" into beagleOutChannel
-    //file "*csi" into indexChannel
-
-    //publishDir "/home/allu5328/Documents/applied_bioinformatics/Nextflow/vcf_files"
 
     /*
     # this is original code that worked for test data{
@@ -111,7 +99,7 @@ process beagle {
 
     shell:
     '''
-    
+
     chrom=$( bcftools query -f '%CHROM\n' !{ref} | head -1)
     startpos=$( bcftools query -f '%POS\n' !{ref} | head -1 )
     endpos=$( bcftools query -f '%POS\n' !{ref} | tail -1 )
@@ -131,7 +119,7 @@ process beagle {
 
     # conform-gt
     java -jar !{cfgt} ref=!{ref} gt=!{f.baseName}_phased.dedup.blurred.vcf.gz chrom=$chrom:$startpos-$endpos out=!{f.baseName}_cfgt.blurred
-    
+
     bcftools index -f !{f.baseName}_cfgt.blurred.vcf.gz
     bcftools index -f !{ref}
 
@@ -140,7 +128,6 @@ process beagle {
     bcftools index -f !{f.baseName}_blurred.imputed.vcf.gz
     '''
 }
-
 
 
 def getLikelihood( file ){
@@ -154,25 +141,38 @@ beagleOutChannel
   .groupTuple()
   .set { grouped_files }
 
+studfile = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/study.population')
+
+beagle_and_studfile = grouped_files.combine(studfile)
+
 process merge_files {
     input:
-    set prefix, file(beagleOutChannel) from grouped_files
+    tuple prefix, beagleFiles, stud from beagle_and_studfile
+    //tuple prefix, file(beagleOutChannel) from grouped_files
+    //file stud from studfile
+    //each f from indexChannel
 
     output:
-    file '*vcf.gz' into mergedVCF
+    file '*merged*imputed.vcf.gz*' into mergedVCF
 
-    publishDir "/home/allu5328/Documents/applied_bioinformatics/Beagle_run_per_sample/merged_vcfs"
+    publishDir "/crex/proj/snic2019-8-216/private/albinlinnea/pipelines/beagle_individually/merged_vcfs", mode: 'copy'
 
     shell:
     '''
     #!/bin/bash -l
 
-    for i in !{beagleOutChannel}
+    for i in !{beagleFiles}
     do
-	    bcftools index $i
+            bcftools index $i
     done
 
-    bcftools merge -Oz -o !{prefix}.imputed.vcf.gz !{beagleOutChannel}
+    #cp $f .
+    bcftools merge -Oz -o merged.-!{prefix}.imputed.vcf.gz !{beagleFiles.join(' ')}
+
+    # sort the merged vcf file
+    bcftools view -S !{stud} -Oz -o tmp.sorted.vcf.gz merged.-!{prefix}.imputed.vcf.gz
+    bcftools view -Oz -o merged.-!{prefix}.imputed.vcf.gz tmp.sorted.vcf.gz
+    bcftools index -f merged.-!{prefix}.imputed.vcf.gz
+
     '''
-    //merge_file.sh ${edited_files} -o $prefix.FINAL.bf
 }
