@@ -1,5 +1,3 @@
-//nextflow pipeline.nf -c pipeline.config --project "uppmax2020-2-5" --clusterOptions "-M snowy" 
-
 csv_script = Channel.fromPath("/home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/likelihood_csv.sh")
 
 process create_csv {
@@ -9,18 +7,13 @@ process create_csv {
     output:
     file "likelihoods.csv" into csvChannel
 
-    publishDir "/home/allu5328/Documents/applied_bioinformatics/Beagle_run_samples_together"
-
     """
     bash $f -2.0 0.1 -0.4 > likelihoods.csv
     """
 
 }
 
-//likelihood_csv=file("/home/allu5328/Documents/applied_bioinformatics/Beagle_run_samples_together/likelihoods.csv")
-//likelihoods = Channel.of(likelihood_csv).splitCsv(header:false).flatten()
 study_population = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/IMP.chr20.snps.gt.vcf.gz')
-//study_population = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/tests/blurring_script/IMP_subset.vcf')
 
 process likelihood_erros {
     input:
@@ -29,8 +22,6 @@ process likelihood_erros {
 
     output:
     file "*.vcf" into vcf_channel
-
-    publishDir "/home/allu5328/Documents/applied_bioinformatics/Beagle_run_samples_together/temp"
 
     "bash /home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/zipped_blurring_script.sh $likelihood $f > blurred_${likelihood}.vcf"
 
@@ -52,7 +43,6 @@ process bgzip {
 
 beagle=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/bin/beagle.11Mar19.69c.jar')
 reference=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/REF.chr20.snps.gt.vcf.gz')
-//reference=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/tests/beagle_test/reference_for_some_markers.vcf')
 cfgtjar=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/bin/conform-gt.jar')
 beagle_script=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/Beagle_run_samples_together/pipeline_beagle_script.sh')
 
@@ -70,28 +60,12 @@ process beagle {
 
     output:
     file "*blurred.imputed.vcf.gz" into beagle_out
-    //file "*imputed*" into outChannel
 
     publishDir "/home/allu5328/Documents/applied_bioinformatics/Beagle_run_samples_together/real_imputed_vcf"
-
-    /*
-    """
-    bash $script $b $cfgt $ref $f
-    """
-    */
     
     shell:
     '''
     #!/bin/bash -l
-    
-    ## This part was the original code
-    ##java -Xss5m -Xmx71680m -jar $b gl=$f \
-    ##ref=$ref gprobs=true out=${f.baseName}.imputed
-
-    #beaglejar=~/1000Genomes/scripts/beagle.11Mar19.69c.jar
-    #cfgtjar=~/1000Genomes/scripts/conform-gt.jar
-    #ref=REF.chr20.snps.gt.vcf.gz
-    #vcf=blurred_-1.2.vcf.gz
 
     chrom=$( bcftools query -f '%CHROM\n' !{ref} | head -1)
     startpos=$( bcftools query -f '%POS\n' !{f} | head -1 )
