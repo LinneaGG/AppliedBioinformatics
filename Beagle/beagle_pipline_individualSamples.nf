@@ -1,5 +1,3 @@
-//nextflow pipeline.nf -c pipeline.config --project "uppmax2020-2-5" --clusterOptions "-M snowy"
-
 csv_script = Channel.fromPath("/home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/likelihood_csv.sh")
 
 process create_csv {
@@ -15,11 +13,7 @@ process create_csv {
 
 }
 
-//likelihood_csv=file("/home/allu5328/Documents/applied_bioinformatics/Nextflow/likelihoods.csv")
-//likelihoods = Channel.of(likelihood_csv).splitCsv(header:false).flatten()
 study_population = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/IMP.chr20.snps.gt.vcf.gz')
-//study_population = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/Nextflow/IMP_subset_lessSamples.vcf')
-//study_population = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/tests/blurring_script/IMP_subset.vcf')
 
 process likelihood_erros {
     input:
@@ -44,14 +38,9 @@ process divide_samples {
     output:
     file "*.vcf.gz" into per_sample_channel
 
-    //publishDir "/home/allu5328/Documents/applied_bioinformatics/Nextflow/per_sample_vcf_files"
-
     shell:
     '''
     #!/bin/bash -l
-
-    #samples_file=reference_for_some_markers.vcf
-    #results_directory=samples/
 
     tot_cols=$(awk '{print NF}' !{f} | sort -nu | tail -n 1)
     sample_cols=$(expr $tot_cols - 9)
@@ -69,8 +58,6 @@ process divide_samples {
 
 beagle=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/bin/beagle.11Mar19.69c.jar')
 reference=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/REF.chr20.snps.gt.vcf.gz')
-//reference=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/tests/beagle_test/reference_for_some_markers.vcf')
-//reference=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/tests/beagle_test/reference_for_some_markers.vcf')
 cfgtjar=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/bin/conform-gt.jar')
 
 process beagle {
@@ -87,15 +74,6 @@ process beagle {
 
     output:
     file "*blurred.imputed.vcf.gz" into beagleOutChannel
-
-    /*
-    # this is original code that worked for test data{
-    #java -Xss5m -jar $b gl=$f \
-    #ref=$ref impute=true gprobs=true out=${f.baseName}.imputed
-    #bcftools index ${f.baseName}.imputed.vcf.gz (does not need)
-    #}
-
-    */
 
     shell:
     '''
@@ -148,9 +126,6 @@ beagle_and_studfile = grouped_files.combine(studfile)
 process merge_files {
     input:
     tuple prefix, beagleFiles, stud from beagle_and_studfile
-    //tuple prefix, file(beagleOutChannel) from grouped_files
-    //file stud from studfile
-    //each f from indexChannel
 
     output:
     file '*merged*imputed.vcf.gz*' into mergedVCF
