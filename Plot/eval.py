@@ -70,7 +70,7 @@ compute = argsin.compute
 
 x_data = 'binned_maf'
 
-reg = re.compile(r"\-[0-9]\.[0-9]")
+reg = re.compile(r"\-[0-9]\.[0-9]*")
 
 uncertainty_match = reg.search(imputed_beagle)
 uncertainty = uncertainty_match.group(0)
