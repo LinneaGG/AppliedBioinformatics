@@ -52,9 +52,10 @@ cfgtjar=Channel.fromPath(filePath + '/../bin/conform-gt.jar')
 //beagle_script=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/Beagle_run_samples_together/pipeline_beagle_script.sh')
 
 process beagle {
-    time '2h'
-    executor 'slurm'
-    clusterOptions '-A snic2021-22-462 -C mem128GB -p node -n 1 -J beagle_test --mail-type=ALL --mail-user albin.lundin.5328@student.uu.se'
+    // run on slurm if using real data
+    //time '2h'
+    //executor 'slurm'
+    //clusterOptions '-A snic2021-22-462 -C mem128GB -p node -n 1 -J beagle_test --mail-type=ALL --mail-user albin.lundin.5328@student.uu.se'
 
     input:
     each f from compressed_vcf_channel
