@@ -10,7 +10,7 @@ process create_csv {
     file "likelihoods.csv" into csvChannel
 
     """
-    bash $f -2.0 0.1 -0.4 > likelihoods.csv
+    bash $f -2.0 0.1 -2.0 > likelihoods.csv
     """
 
 }
@@ -58,7 +58,7 @@ process beagle {
     file b from beagle
     file ref from reference
     file cfgt from cfgtjar
-    file script from beagle_script
+//    file script from beagle_script
 
     output:
     file "*blurred.imputed.vcf.gz" into beagle_out

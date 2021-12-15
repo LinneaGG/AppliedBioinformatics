@@ -1,0 +1,73 @@
+Dec-15 11:24:27.392 [main] DEBUG nextflow.cli.Launcher - $> nextflow beagle_pipeline_samplesTogether.nf
+Dec-15 11:24:27.531 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 20.10.0
+Dec-15 11:24:27.544 [main] INFO  nextflow.cli.CmdRun - Launching `beagle_pipeline_samplesTogether.nf` [hungry_lalande] - revision: f0d9eb227c
+Dec-15 11:24:27.733 [main] DEBUG nextflow.Session - Session uuid: b74f7e69-f60c-4c54-b751-52b1b59f2cfa
+Dec-15 11:24:27.733 [main] DEBUG nextflow.Session - Run name: hungry_lalande
+Dec-15 11:24:27.735 [main] DEBUG nextflow.Session - Executor pool size: 2
+Dec-15 11:24:27.805 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 20.10.0 build 5431
+  Created: 01-11-2020 15:28 UTC (16:28 CEST)
+  System: Linux 3.10.0-1160.49.1.el7.x86_64
+  Runtime: Groovy 3.0.5 on Java HotSpot(TM) 64-Bit Server VM 11.0.9+7-LTS
+  Encoding: UTF-8 (ANSI_X3.4-1968)
+  Process: 11464@rackham2.uppmax.uu.se [89.44.250.83]
+  CPUs: 1 - Mem: 62.8 GB (62.6 GB) - Swap: 7.9 GB (7.9 GB)
+Dec-15 11:24:27.838 [main] DEBUG nextflow.Session - Work-dir: /domus/h1/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/Beagle/work [nfs]
+Dec-15 11:24:27.839 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /domus/h1/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/Beagle/bin
+Dec-15 11:24:27.932 [main] DEBUG nextflow.Session - Observer factory: TowerFactory
+Dec-15 11:24:27.935 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Dec-15 11:24:28.131 [main] DEBUG nextflow.Session - Session start invoked
+Dec-15 11:24:29.404 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Dec-15 11:24:29.418 [main] DEBUG nextflow.Session - Workflow process names [dsl1]: create_csv, beagle, bgzip, likelihood_erros
+Dec-15 11:24:29.638 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Dec-15 11:24:29.639 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Dec-15 11:24:29.646 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Dec-15 11:24:29.681 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=1; memory=62.8 GB; capacity=1; pollInterval=100ms; dumpInterval=5m
+Dec-15 11:24:30.013 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Dec-15 11:24:30.013 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Dec-15 11:24:30.223 [main] DEBUG nextflow.processor.TaskProcessor - Creating *combiner* operator for each param(s) at index(es): [0]
+Dec-15 11:24:30.283 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Dec-15 11:24:30.283 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Dec-15 11:24:30.298 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: slurm
+Dec-15 11:24:30.298 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'slurm'
+Dec-15 11:24:30.305 [main] DEBUG nextflow.executor.Executor - [warm up] executor > slurm
+Dec-15 11:24:30.308 [main] DEBUG n.processor.TaskPollingMonitor - Creating task monitor for executor 'slurm' > capacity: 100; pollInterval: 5s; dumpInterval: 5m 
+Dec-15 11:24:30.310 [main] DEBUG n.executor.AbstractGridExecutor - Creating executor 'slurm' > queue-stat-interval: 1m
+Dec-15 11:24:30.313 [main] DEBUG nextflow.processor.TaskProcessor - Creating *combiner* operator for each param(s) at index(es): [0]
+Dec-15 11:24:30.317 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
+Dec-15 11:24:30.317 [main] DEBUG nextflow.Session - Session await
+Dec-15 11:24:30.436 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Dec-15 11:24:30.441 [Task submitter] INFO  nextflow.Session - [3d/6183ca] Submitted process > create_csv (1)
+Dec-15 11:24:30.519 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: create_csv (1); status: COMPLETED; exit: 0; error: -; workDir: /domus/h1/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/Beagle/work/3d/6183ca48fab177e1f8cfe3558da2e5]
+Dec-15 11:24:30.592 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Dec-15 11:24:30.593 [Task submitter] INFO  nextflow.Session - [6b/e1bdfd] Submitted process > likelihood_erros (1)
+Dec-15 11:24:30.679 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: likelihood_erros (1); status: COMPLETED; exit: 127; error: -; workDir: /domus/h1/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/Beagle/work/6b/e1bdfd3f230a915f69e1e34c35cbad]
+Dec-15 11:24:30.705 [Task monitor] ERROR nextflow.processor.TaskProcessor - Error executing process > 'likelihood_erros (1)'
+
+Caused by:
+  Process `likelihood_erros (1)` terminated with an error exit status (127)
+
+Command executed:
+
+  bash /home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/zipped_blurring_script.sh -2.0 IMP.chr20.snps.gt.vcf.gz > blurred_-2.0.vcf
+
+Command exit status:
+  127
+
+Command output:
+  (empty)
+
+Command error:
+  bash: /home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/zipped_blurring_script.sh: No such file or directory
+
+Work dir:
+  /domus/h1/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/Beagle/work/6b/e1bdfd3f230a915f69e1e34c35cbad
+
+Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
+Dec-15 11:24:30.712 [Task monitor] DEBUG nextflow.Session - Session aborted -- Cause: Process `likelihood_erros (1)` terminated with an error exit status (127)
+Dec-15 11:24:30.712 [main] DEBUG nextflow.Session - Session await > all process finished
+Dec-15 11:24:30.789 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Dec-15 11:24:30.796 [main] DEBUG nextflow.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=1; failedCount=1; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=7ms; failedDuration=70ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=1; peakCpus=1; peakMemory=0; ]
+Dec-15 11:24:30.935 [main] DEBUG nextflow.CacheDB - Closing CacheDB done
+Dec-15 11:24:30.940 [main] DEBUG nextflow.util.SpuriousDeps - AWS S3 uploader shutdown
+Dec-15 11:24:30.949 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye
