@@ -1,1 +1,1 @@
-Here are some data, imputing samples as well as reference.
+Here are data for the samples to impute as well as the reference.
