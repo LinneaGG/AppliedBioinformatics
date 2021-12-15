@@ -132,7 +132,7 @@ process merge_files {
     output:
     file '*merged*imputed.vcf.gz*' into mergedVCF
 
-    publishDir "/crex/proj/snic2019-8-216/private/albinlinnea/pipelines/beagle_individually/merged_vcfs", mode: 'copy'
+    publishDir "${filePath}/../Results/BeagleIndividually/", mode: 'copy'
 
     shell:
     '''
