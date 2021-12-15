@@ -33,9 +33,10 @@ process likelihood_erros {
 }
 
 process divide_samples {
-    time '1h'
-    executor 'slurm'
-    clusterOptions '-A snic2021-22-462 -p core -n 1 -J divide_samples'
+    // run on uppmax if using actual data (not test data)
+    //time '1h'
+    //executor 'slurm'
+    //clusterOptions '-A snic2021-22-462 -p core -n 1 -J divide_samples'
 
     input:
     file f from vcf_channel
@@ -66,9 +67,10 @@ reference=Channel.fromPath(filePath + '/../data/REF.chr20.snps.gt.vcf.gz')
 cfgtjar=Channel.fromPath(filePath + '/../bin/conform-gt.jar')
 
 process beagle {
-    time '1h'
-    executor 'slurm'
-    clusterOptions '-A snic2021-22-462 -p core -n 1 -J beagle_run_per_sample'
+    //run on uppmax if using real data
+    //time '1h'
+    //executor 'slurm'
+    //clusterOptions '-A snic2021-22-462 -p core -n 1 -J beagle_run_per_sample'
 
 
     input:
