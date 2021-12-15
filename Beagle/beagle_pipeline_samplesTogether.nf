@@ -25,7 +25,7 @@ process likelihood_erros {
     output:
     file "*.vcf" into vcf_channel
 
-    "bash /home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/zipped_blurring_script.sh $likelihood $f > blurred_${likelihood}.vcf"
+    "bash ${filePath}/../Scripts/zipped_blurring_script.sh $likelihood $f > blurred_${likelihood}.vcf"
 
 }
 
