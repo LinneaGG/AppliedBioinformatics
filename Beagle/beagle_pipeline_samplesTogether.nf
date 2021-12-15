@@ -1,4 +1,6 @@
-csv_script = Channel.fromPath("/home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/likelihood_csv.sh")
+filePath = "$PWD"
+
+csv_script = Channel.fromPath(filePath + "/../Scripts/likelihood_csv.sh")
 
 process create_csv {
     input:
@@ -13,7 +15,7 @@ process create_csv {
 
 }
 
-study_population = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/IMP.chr20.snps.gt.vcf.gz')
+study_population = Channel.fromPath(filePath + '/../data/IMP.chr20.snps.gt.vcf.gz')
 
 process likelihood_erros {
     input:
@@ -41,10 +43,10 @@ process bgzip {
 
 }
 
-beagle=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/bin/beagle.11Mar19.69c.jar')
-reference=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/REF.chr20.snps.gt.vcf.gz')
-cfgtjar=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/bin/conform-gt.jar')
-beagle_script=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/Beagle_run_samples_together/pipeline_beagle_script.sh')
+beagle=Channel.fromPath(filePath + '/../bin/beagle.11Mar19.69c.jar')
+reference=Channel.fromPath(filePath + '/../data/REF.chr20.snps.gt.vcf.gz')
+cfgtjar=Channel.fromPath(filePath + '/../bin/conform-gt.jar')
+//beagle_script=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/Beagle_run_samples_together/pipeline_beagle_script.sh')
 
 process beagle {
     time '2h'
