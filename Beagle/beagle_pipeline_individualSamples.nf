@@ -15,7 +15,10 @@ process create_csv {
 
 }
 
-study_population = Channel.fromPath(filePath + '/../data/IMP.chr20.snps.gt.vcf.gz')
+//this is a test data set
+study_population = Channel.fromPath(filePath + '/../data/IMP_subset.vcf')
+// this is the real data set
+//study_population = Channel.fromPath(filePath + '/../data/IMP.chr20.snps.gt.vcf.gz')
 
 process likelihood_erros {
     input:
