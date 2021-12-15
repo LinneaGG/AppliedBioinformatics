@@ -63,7 +63,7 @@ process beagle {
     output:
     file "*blurred.imputed.vcf.gz" into beagle_out
 
-    publishDir "/home/allu5328/Documents/applied_bioinformatics/Beagle_run_samples_together/real_imputed_vcf"
+    publishDir "${filePath}/../Results/BeagleTogether/"
     
     shell:
     '''
