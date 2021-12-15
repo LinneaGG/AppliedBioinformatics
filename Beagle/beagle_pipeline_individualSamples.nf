@@ -10,13 +10,13 @@ process create_csv {
     file "likelihoods.csv" into csvChannel
 
     """
-    bash $f -0.8 0.1 -0.4 > likelihoods.csv
+    bash $f -0.8 0.1 -0.8 > likelihoods.csv
     """
 
 }
 
 //this is a test data set
-study_population = Channel.fromPath(filePath + '/../data/IMP_subset.vcf')
+study_population = Channel.fromPath(filePath + '/../data/IMP_subset_less_samples.vcf')
 // this is the real data set
 //study_population = Channel.fromPath(filePath + '/../data/IMP.chr20.snps.gt.vcf.gz')
 
