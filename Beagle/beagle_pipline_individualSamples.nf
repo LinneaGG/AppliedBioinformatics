@@ -1,4 +1,6 @@
-csv_script = Channel.fromPath("/home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/likelihood_csv.sh")
+filePath = "$PWD"
+
+csv_script = Channel.fromPath(filePath + "/../Scripts/likelihood_csv.sh")
 
 process create_csv {
     input:
@@ -13,7 +15,7 @@ process create_csv {
 
 }
 
-study_population = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/IMP.chr20.snps.gt.vcf.gz')
+study_population = Channel.fromPath(filePath + '/../data/IMP.chr20.snps.gt.vcf.gz')
 
 process likelihood_erros {
     input:
@@ -23,14 +25,14 @@ process likelihood_erros {
     output:
     file "*.vcf" into vcf_channel
 
-    "bash /home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/zipped_blurring_script.sh $likelihood $f > ${f.baseName}_${likelihood}.vcf"
+    "bash ${filePath}/../Scripts/zipped_blurring_script.sh $likelihood $f > ${f.baseName}_${likelihood}.vcf"
 
 }
 
 process divide_samples {
     time '1h'
     executor 'slurm'
-    clusterOptions '-A snic2021-22-462 -p core -n 1 -J beagle_run_per_sample'
+    clusterOptions '-A snic2021-22-462 -p core -n 1 -J divide_samples'
 
     input:
     file f from vcf_channel
@@ -56,9 +58,9 @@ process divide_samples {
 
 
 
-beagle=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/bin/beagle.11Mar19.69c.jar')
-reference=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/REF.chr20.snps.gt.vcf.gz')
-cfgtjar=Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/bin/conform-gt.jar')
+beagle=Channel.fromPath(filePath + '/../bin/beagle.11Mar19.69c.jar')
+reference=Channel.fromPath(filePath + '/../data/REF.chr20.snps.gt.vcf.gz')
+cfgtjar=Channel.fromPath(filePath + '/../bin/conform-gt.jar')
 
 process beagle {
     time '1h'
@@ -119,7 +121,7 @@ beagleOutChannel
   .groupTuple()
   .set { grouped_files }
 
-studfile = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/study.population')
+studfile = Channel.fromPath(filePath + '/../data/study.population')
 
 beagle_and_studfile = grouped_files.combine(studfile)
 
