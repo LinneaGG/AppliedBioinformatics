@@ -14,8 +14,8 @@ LFLAGS = -static -static-libgcc -static-libstdc++ -fopenmp -g -o
 SOURCES=$(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
 TARGET=phase
-LIBSTATGEN=/home/allu5328/Documents/applied_bioinformatics/Phaser_test/phaser_test3/libStatGen
-EIGEN=/home/allu5328/Documents/applied_bioinformatics/Phaser_test/phaser_test3/eigen3
+LIBSTATGEN=$PWD/libStatGen
+EIGEN=$PWD/eigen3
 
 all: $(TARGET)
 
