@@ -1,4 +1,6 @@
-imputed_files = Channel.fromPath("/crex/proj/snic2019-8-216/private/albinlinnea/pipelines/phaser/imputed_samples/*postgenos*")
+filePath="$PWD"
+
+imputed_files = Channel.fromPath(filePath + "/../Results/Phaser_imputed/*postgenos*")
 
 def getLikelihood( file ){
     //regexpPE = /([0-9]\.[0-9])/
@@ -11,7 +13,7 @@ imputed_files
   .groupTuple()
   .set { grouped_files }
 
-studfile = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/study.population')
+studfile = Channel.fromPath(filePath + '/../data/study.population')
 
 imputed_and_studfile = grouped_files.combine(studfile)
 
@@ -25,7 +27,7 @@ process merge_files {
     output:
     file '*merged.imputed.vcf.gz*' into mergedVCF
 
-    publishDir "/crex/proj/snic2019-8-216/private/albinlinnea/pipelines/phaser/merged_imputed_samples/", mode: 'copy'
+    publishDir "${filePath}/../Results/Phaser_merged/", mode: 'copy'
 
     shell:
     '''
