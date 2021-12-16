@@ -17,7 +17,7 @@ process create_csv {
     file "likelihoods.csv" into csvChannel
 
     """
-    bash $f -0.75 0.05 -0.4 > likelihoods.csv
+    bash $f -0.75 0.05 -0.75 > likelihoods.csv
     """
 
 }
@@ -79,7 +79,7 @@ process phaser{
     '''
     ne=11418
     error=0.001
-    results_directory=/proj/g2021012/nobackup/work/albinlinnea/phaser/imputed_samples/
+    results_directory=!{filePath}/../Results/Phaser_imputed/
 
     # parameters for the linear_state  branch
     algo=integrated
