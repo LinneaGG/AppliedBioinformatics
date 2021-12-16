@@ -1,11 +1,13 @@
-sample = Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/IMP.chr20.snps.gt.vcf.gz')
-ref =Channel.fromPath('/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/REF.chr20.snps.gt.vcf.gz')
-map = Channel.fromPath("/home/allu5328/Documents/applied_bioinformatics/camilles_repository/genotypooler/data/plink.chr20.GRCh37.map")
-phase = Channel.fromPath("/crex/proj/snic2019-8-216/private/phaser-example/phase")
-template_vcf = Channel.fromPath("/crex/proj/snic2019-8-216/private/phaser-example/create_template_vcf.sh")
-template_vcf_gtgp = Channel.fromPath("/crex/proj/snic2019-8-216/private/phaser-example/create_template_vcf_gtgp.sh")
+filePath="$PWD"
 
-csv_script = Channel.fromPath("/home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/likelihood_csv.sh")
+sample = Channel.fromPath(filePath + '/../data/IMP.chr20.snps.gt.vcf.gz')
+ref =Channel.fromPath(filePath + '/../data/REF.chr20.snps.gt.vcf.gz')
+map = Channel.fromPath(filePath + "/../data/plink.chr20.GRCh37.map")
+phase = Channel.fromPath(filePath + "/../bin/Phaser/phase")
+template_vcf = Channel.fromPath(filePath + "/../bin/Phaser/create_template_vcf.sh")
+template_vcf_gtgp = Channel.fromPath(filePath + "/../bin/Phaser/create_template_vcf_gtgp.sh")
+
+csv_script = Channel.fromPath(filePath + "/../Scripts/likelihood_csv.sh")
 
 process create_csv {
     input:
@@ -28,7 +30,7 @@ process likelihood_erros {
     output:
     file "*.vcf" into vcf_channel
 
-    "bash /home/allu5328/Documents/applied_bioinformatics/AppliedBioinformatics/zipped_blurring_script.sh $likelihood $f > ${f.baseName}_${likelihood}.vcf"
+    "bash ${filePath}/../Scripts/zipped_blurring_script.sh $likelihood $f > ${f.baseName}_${likelihood}.vcf"
 
 }
 
