@@ -1,7 +1,10 @@
 filePath="$PWD"
 
-sample = Channel.fromPath(filePath + '/../data/IMP.chr20.snps.gt.vcf.gz')
-ref =Channel.fromPath(filePath + '/../data/REF.chr20.snps.gt.vcf.gz')
+//this is a test sample
+sample = Channel.fromPath(filePath + "/../data/IMP_subset_less_samples.vcf.gz")
+ref = Channel.fromPath(filePath + "/../data/test_ref_20first.vcf.gz")
+//sample = Channel.fromPath(filePath + '/../data/IMP.chr20.snps.gt.vcf.gz')
+//ref =Channel.fromPath(filePath + '/../data/REF.chr20.snps.gt.vcf.gz')
 map = Channel.fromPath(filePath + "/../data/plink.chr20.GRCh37.map")
 phase = Channel.fromPath(filePath + "/../bin/Phaser/phase")
 template_vcf = Channel.fromPath(filePath + "/../bin/Phaser/create_template_vcf.sh")
@@ -35,9 +38,10 @@ process likelihood_erros {
 }
 
 process divide_samples {
-    time '1h'
-    executor 'slurm'
-    clusterOptions '-A snic2021-22-462 -p core -n 1 -J divide_samples'
+    //run on uppmax if using real samples
+    //time '1h'
+    //executor 'slurm'
+    //clusterOptions '-A snic2021-22-462 -p core -n 1 -J divide_samples'
 
     input:
     file f from vcf_channel
@@ -63,9 +67,10 @@ process divide_samples {
 
 
 process phaser{
-    time '10h'
-    executor 'slurm'
-    clusterOptions '-A snic2021-22-462 -C mem128GB -p node -n 20 -J run_phaser'
+    //run on uppmax if using real data
+    //time '10h'
+    //executor 'slurm'
+    //clusterOptions '-A snic2021-22-462 -C mem128GB -p node -n 20 -J run_phaser'
 
     input:
     each s from per_sample_channel.flatten()
