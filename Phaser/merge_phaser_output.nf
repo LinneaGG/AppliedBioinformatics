@@ -39,12 +39,12 @@ process merge_files {
     done
 
     #cp $f .
-    bcftools merge -Oz -o !{prefix}.merged.imputed.vcf.gz !{imputed_files}
+    bcftools merge -Oz -o  phaser_-!{prefix}.merged.imputed.vcf.gz !{imputed_files}
 
     # sort the merged vcf file
-    bcftools view -S !{stud} -Oz -o tmp.sorted.vcf.gz !{prefix}.merged.imputed.vcf.gz
-    bcftools view -Oz -o !{prefix}.merged.imputed.vcf.gz tmp.sorted.vcf.gz
-    bcftools index -f !{prefix}.merged.imputed.vcf.gz
+    bcftools view -S !{stud} -Oz -o tmp.sorted.vcf.gz  phaser_-!{prefix}.merged.imputed.vcf.gz
+    bcftools view -Oz -o  phaser_-!{prefix}.merged.imputed.vcf.gz tmp.sorted.vcf.gz
+    bcftools index -f  phaser_-!{prefix}.merged.imputed.vcf.gz
 
     '''
 }
