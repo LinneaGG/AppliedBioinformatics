@@ -219,6 +219,7 @@ for dquant, f in dataquants.items():
                                                                             else 'main'),
                       fontsize=axlabsz)
         gY.set_ylabel(str.capitalize(dataf.columns[2].replace('_', ' ')), fontsize=axlabsz)
+        gY.set_title('Log uncertainty: {}'.format(uncertainty))
 
         gY.set(ylim=yscale[dquant])
         # if dquant == 'cross_entropy':
